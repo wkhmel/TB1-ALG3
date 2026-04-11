@@ -17,9 +17,6 @@ struct arvoreB {
   int32_t t_arvore;
 };
 
-/* verifica se a memória foi alocada, imprimindo mensagem de erro e dando exit caso contrário. */
-void verificaPonteiros(void *p);
-
 /* a partir de um t >= 2, cria uma árvore b sem nodos e a retorna. */
 struct arvoreB* criarArvoreB(int32_t t_arvore);
 
