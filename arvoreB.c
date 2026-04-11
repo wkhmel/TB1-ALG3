@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "arvoreB.h"
 
 struct nodo {
-    int n; 
-    int *chaves;
+    int32_t n; 
+    int32_t *chaves;
     bool ehfolha; 
     /* vetor de ponteiros para os filhos */
     struct nodo **filhos;
@@ -127,6 +128,7 @@ void imprimirArvoreB(struct arvoreB* arvore) {
     if (!arvore)
         return;
     
+        
 }
 
 void imprimirNodoOrdem(struct nodo *no) {
@@ -177,10 +179,27 @@ struct nodo *buscarArvoreB(struct arvoreB *arvore, int32_t chave, int32t *idxEnc
     return buscarNodoB(arvore->raiz, chave, idxEncontrado);
 }
 
-void deletarArvore(struct arvoreB* arvore) {
-  if (!arvore || !arvore->raiz)
-      return;
+void liberarNodo(struct nodo *no) {
+    if (!no)
+        return;
 
+    if (!no->ehfolha) {
+        for (int i = 0; i <= no->n; i++)
+            liberarNodo(no->filhos[i]);
+    }
+
+    free(no);
+}
+
+void deletarArvore(struct arvoreB* arvore) {
+    if (!arvore)
+        return;
+
+    liberarNodo(arvore->raiz);
+    arvore->raiz = NULL;
+
+    free(arvore);
+}
   
 }
 
