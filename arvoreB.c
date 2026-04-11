@@ -3,19 +3,6 @@
 #include <stdbool.h>
 #include "arvoreB.h"
 
-struct nodo {
-    int32_t n; 
-    int32_t *chaves;
-    bool ehfolha; 
-    /* vetor de ponteiros para os filhos */
-    struct nodo **filhos;
-};
-
-struct arvoreB {
-    struct nodo *raiz;
-    int32_t t_arvore;
-};
-
 void verificaPonteiros(void *p) {
     if (!p) {
         fprintf(stderr, "Falha ao alocar memoria.\n");
