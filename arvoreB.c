@@ -4,6 +4,8 @@
 #include "arvoreB.h"
 #include "fila.h"
 
+struct nodo *criaNodoB(
+
 struct arvoreB* criarArvoreB(int32_t t_arvore) {
     /* o t tem que ser maior ou igual a 2. */
     if (t_arvore < 2)
@@ -25,7 +27,7 @@ struct arvoreB* criarArvoreB(int32_t t_arvore) {
 struct nodo *repartirFilho(struct nodo *no, int32_t idxSplit, int32_t t_arvore) {
     /* chave "nova" que quero inserir no nodo pai. */
     /* usei calloc para não ter que inicializar cada um dos filhos como NULL */
-    struct nodo *div = calloc(sizeof(struct nodo));
+    struct nodo *div = calloc(1, sizeof(struct nodo));
     
     if (!div) {
         fprintf(stderr, "Falha ao alocar memoria.\n");
@@ -131,33 +133,35 @@ void imprimirDados(struct nodo *no) {
     printf("(n:%d) ", no->n);
 }
 
-void imprimirNivel(int32_t nivel) {
-    printf("----//----\n");
-    printf("Nivel %d\n", nivel);
-    printf("----//----\n");
-}
-
 void imprimirNodoLargura(struct nodo *no) {
     if (!no)
         return;
 
     /* criando fila "bfs" (breadth-first search) */
     struct fila_t *bfs = fila_cria();
-    fila_insere(bfs, no);
+    inserirFila(bfs, no);
 
     int32_t nivel = 0;
     while (bfs->num > 0) {
         /* guardo a quantidade de nodos que espero nesse mesmo nível */
         int32_t qtdNodos = bfs->num;
-        imprimirNivel(nivel);
+        
+        printf("----//----\n");
+        printf("Nivel %d\n", nivel);
+        printf("----//----\n");
 
         /* loop para printar os nodos do mesmo nível primeiro */
-        /* só sai do loop quanto k ultrapassa a quantidade de nodos do nível */
+        /* só sai do loop quando k ultrapassa a quantidade de nodos do nível */
         for (int k = 0; k <= qtdNodos; k++) {
-            struct nodo *aux = fila_retira(bfs);
+            struct nodo *aux = retirarFila(bfs);
             
-            imprimirDados(aux);
+            if (no->ehfolha)
+                printf("F ");
+            else
+                printf("I ");
 
+            printf("(n:%d) ", no->n);
+            
             printf("[");
             int i = 0;
             while (i < aux->n - 1) {
@@ -171,7 +175,7 @@ void imprimirNodoLargura(struct nodo *no) {
             if (!aux->ehfolha) {
                 for (int i = 0; i <= aux->n; i++) {
                     if (aux->filhos[i] != NULL)
-                            fila_insere(bfs, no->filhos[i]);
+                            inserirFila(bfs, no->filhos[i]);
                 }   
             }
         }
@@ -179,7 +183,7 @@ void imprimirNodoLargura(struct nodo *no) {
         printf("\n");
         nivel++;
     }
-    fila_destroi(bfs);
+    destruirFila(bfs);
 }
 
 /* impressão em largura que passa por todos os nodos por meio de uma auxiliar */
