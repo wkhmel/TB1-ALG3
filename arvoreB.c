@@ -4,7 +4,33 @@
 #include "arvoreB.h"
 #include "fila.h"
 
-struct nodo *criaNodoB(
+struct nodo *criarNodoB(int32_t t_arvore, bool ehfolha) {
+    struct nodo *novo = malloc(sizeof(struct nodo));
+
+    if (!novo) {
+        fprintf(stderr, "Falha ao alocar memoria.\n");
+        exit(1);
+    }
+
+    novo->n = 0;
+    novo->ehfolha = ehfolha;
+
+    /* alocando o maior número possível de filhos de acordo com o t passado */
+    novo->chaves = malloc((2*(t_arvore) - 1)*sizeof(int32_t chaves);
+
+    if (!novo->chaves) {
+        fprintf(stderr, "Falha ao alocar memoria.\n");
+        exit(1);
+    }
+
+    novo->filhos = malloc((2*(t_arvore) - 1)*sizeof(struct nodo));
+
+    if (!novo->filhos) {
+        fprintf(stderr, "Falha ao alocar memoria.\n");
+        exit(1);
+    }
+    
+}
 
 struct arvoreB* criarArvoreB(int32_t t_arvore) {
     /* o t tem que ser maior ou igual a 2. */
@@ -18,7 +44,7 @@ struct arvoreB* criarArvoreB(int32_t t_arvore) {
         exit(1);
     }
 
-    b->raiz = NULL;
+    b->raiz = criarNodoB(t_arvore, true);
     b->t_arvore = t_arvore;
 
     return b;
