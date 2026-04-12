@@ -4,9 +4,11 @@
 
 /* cria uma fila sem nada */
 struct fila_t *fila_cria() {
-        struct fila_t *fila_vazia = malloc(sizeof(struct fila_t));
-        if (!fila_vazia)
-                return NULL;
+        if (!(struct fila_t *fila_vazia = malloc(sizeof(struct fila_t)))) {
+                fprintf(stderr, "Falha ao alocar memoria.\n");
+                exit(1);
+        }
+                
         fila_vazia->prim = NULL;
         fila_vazia->ult = NULL;
         fila_vazia->num = 0;
@@ -32,7 +34,11 @@ struct fila_t *fila_destroi(struct fila_t *f) {
 
 /* insere um elemento no fim da fila */
 int fila_insere(struct fila_t *f, int item){
-        struct fila_nodo_t *nodo = malloc(sizeof(struct fila_nodo_t));
+        if (!(struct fila_nodo_t *nodo = malloc(sizeof(struct fila_nodo_t)))) {
+                fprintf(stderr, "Falha ao alocar memoria.\n");
+                exit(1);
+        }
+        
         if (!(f) || !(nodo))
                 return 0;
         nodo->item = item;
