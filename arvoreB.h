@@ -18,9 +18,6 @@ struct arvoreB {
   int32_t t_arvore;
 };
 
-/* verifica se houve erro em alocação dinâmica de memória, printando erro no stderr e dando exit(1) nesse caso. */
-void verificaMemoria(void *p);
-
 /* a partir de um t >= 2, cria uma árvore b sem nodos e a retorna. */
 struct arvoreB* criarArvoreB(int32_t t_arvore);
 
