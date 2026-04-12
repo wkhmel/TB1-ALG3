@@ -110,12 +110,21 @@ void inserirArvoreB(struct arvoreB* arvore, int32_t chave) {
         inserirNaoCheio(arvore->raiz, chave, arvore->t_arvore);
 }
 
+void imprimirNodoLargura(struct nodo *no) {
+    if (!no)
+        return;
+
+    struct fila_t *bfs = fila_cria();
+    if (!(fila_insere
+    
+}
+
 /* impressão em largura */
 void imprimirArvoreB(struct arvoreB* arvore) {
     if (!arvore)
         return;
     
-        
+    imprimirNodoLargura(struct nodo arvore->raiz);
 }
 
 void imprimirNodoOrdem(struct nodo *no) {
