@@ -3,7 +3,7 @@
 #include "fila.h"
 
 /* cria uma fila sem nada */
-struct fila_t *fila_cria() {
+struct fila_t *criarFila() {
         struct fila_t *vazia = malloc(sizeof(struct fila_t));
         
         if (!vazia) {
@@ -18,7 +18,7 @@ struct fila_t *fila_cria() {
 }
 
 /* retorna uma fila vazia, com todos os elementos e estruturas destruidos */
-void fila_destroi(struct fila_t *f) {
+void destruirFila(struct fila_t *f) {
         if (f == NULL)
                 return;
         
@@ -35,7 +35,7 @@ void fila_destroi(struct fila_t *f) {
 }
 
 /* insere um elemento no fim da fila */
-void fila_insere(struct fila_t *f, struct nodo *item) {
+void inserirFila(struct fila_t *f, struct nodo *item) {
         if (!f)
                 return;
         
@@ -59,7 +59,7 @@ void fila_insere(struct fila_t *f, struct nodo *item) {
 }
 
 /* retira um elemento do começo da fila, por ordem de chegada, e o retorna */
-struct nodo *fila_retira(struct fila_t *f) {
+struct nodo *retirarFila(struct fila_t *f) {
         
         if (!f || f->num == 0)
                 return NULL;
@@ -74,12 +74,4 @@ struct nodo *fila_retira(struct fila_t *f) {
                 f->ult = NULL;
         
         return removido;
-}
-
-/* retorna o tamanho da fila */
-int fila_tamanho(struct fila_t *f) {
-        if (!f)
-                return -1;
-        
-        return f->num;
 }
