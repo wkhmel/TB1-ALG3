@@ -1,7 +1,8 @@
 #ifndef ARVORE_B_H_
 #define ARVORE_B_H_
-
+#include <stdio.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 struct nodo {
     int32_t n; 
