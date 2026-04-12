@@ -28,8 +28,8 @@ struct fila_t *fila_destroi (struct fila_t *f);
 /* retorna 1 se tiver sucesso ou 0 se falhar. */
 int fila_insere (struct fila_t *f, struct nodofila *item);
 
-/* retira o primeiro nodo da fila e o devolve, retornando 1 em sucesso e 0 c.c. */
-int fila_retira (struct fila_t *f, struct nodofila *item);
+/* retira o primeiro nodo da fila e o retorna */
+struct nodo *fila_retira (struct fila_t *f, struct nodofila *item);
 
 /* retorna o número de itens na fila ou -1 em caso de erro. */
 int fila_tamanho (struct fila_t *f);
