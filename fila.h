@@ -2,7 +2,6 @@
 #define FILA_H
 #include <stdio.h>
 #include <stdlib.h>
-#include "arvoreB.h"
 
 struct nodofila {
         struct nodo *item;
