@@ -3,15 +3,20 @@
 #include <stdbool.h>
 #include "arvoreB.h"
 
+void verificaMemoria(void *p) {
+    if (!p) {
+        fprintf("Falha ao alocar memoria.\n");
+        exit(1);
+    }
+}
+
 struct arvoreB* criarArvoreB(int32_t t_arvore) {
     /* o t tem que ser maior ou igual a 2. */
     if (t_arvore < 2)
         return NULL;
     
-    if (!(struct arvoreB *b = malloc(sizeof(struct arvoreB)))) {
-        fprintf(stderr, "Falha ao alocar memoria.\n");
-        exit(1);
-    }
+    struct arvoreB *b = malloc(sizeof(struct arvoreB));
+    verificaMemoria(b);
 
     b->raiz = NULL;
     b->t_arvore = t_arvore;
@@ -22,10 +27,8 @@ struct arvoreB* criarArvoreB(int32_t t_arvore) {
 struct nodo *repartirFilho(struct nodo *no, int32_t idxSplit, int32_t t_arvore) {
     /* chave "nova" que quero inserir no nodo pai. */
     /* usei calloc para não ter que inicializar cada um dos filhos como NULL */
-    if (!(struct nodo *div = calloc(sizeof(struct nodo)))) {
-        fprinf(stderr, "Falha ao alocar memoria.\n");
-        exit(1);
-    } 
+    struct nodo *div = calloc(sizeof(struct nodo));
+    verificaMemoria(div);
   
     struct nodo *aux = no->filhos[idxSplit]; /* nodo cheio que quero dividir */
     div->ehfolha = aux->ehfolha; 
@@ -96,10 +99,8 @@ void inserirArvoreB(struct arvoreB* arvore, int32_t chave) {
   
     /* verificando se a raiz está cheia */
     if (arvore->raiz->n == 2*(arvore->t_arvore) - 1) {
-        if (!(struct nodo *novo = malloc(sizeof(struct nodo)))) {
-            fprinf(stderr, "Falha ao alocar memoria.\n");
-            exit(1);
-        }
+        struct nodo *novo = malloc(sizeof(struct nodo));
+        verificaMemoria(novo);
         
         arvore->raiz = novo;
         novo->ehfolha = false;
