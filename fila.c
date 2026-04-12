@@ -8,7 +8,7 @@ struct fila_t *fila_cria() {
         struct fila_t *vazia = malloc(sizeof(struct fila_t));
         
         if (!vazia) {
-                fprintf("Falha ao alocar memoria.\n");
+                fprintf(stderr, "Falha ao alocar memoria.\n");
                 exit(1);
         }
         
@@ -43,7 +43,7 @@ void fila_insere(struct fila_t *f, struct nodo *item) {
         struct nodofila *novo = malloc(sizeof(struct nodofila));
         
         if (!novo) {
-                fprintf("Falha ao alocar memoria.\n");
+                fprintf(stderr, "Falha ao alocar memoria.\n");
                 exit(1);
         }
         
