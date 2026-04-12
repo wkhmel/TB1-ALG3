@@ -233,7 +233,7 @@ struct nodo *buscarNodoB(struct nodo *no, int32_t chave, int32_t *idxEncontrado)
 }
 
 struct nodo *buscarArvoreB(struct arvoreB *arvore, int32_t chave, int32_t *idxEncontrado) {
-    if (!arvore || !arvore->raiz)
+    if (!arvore || !arvore->raiz || !idxEncontrado)
         return NULL;
 
     return buscarNodoB(arvore->raiz, chave, idxEncontrado);
