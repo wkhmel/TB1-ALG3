@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "fila.h"
-#include "arvoreB.h"
 
 /* cria uma fila sem nada */
 struct fila_t *fila_cria() {
