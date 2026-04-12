@@ -1,17 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "fila.h"
+#include "arvoreB.h"
 
 /* cria uma fila sem nada */
 struct fila_t *fila_cria() {
-        if (!(struct fila_t *fila_vazia = malloc(sizeof(struct fila_t)))) {
+        if (!(struct fila_t *fila_vazia = calloc(sizeof(struct fila_t)))) {
                 fprintf(stderr, "Falha ao alocar memoria.\n");
                 exit(1);
         }
-                
-        fila_vazia->prim = NULL;
-        fila_vazia->ult = NULL;
-        fila_vazia->num = 0;
+        
         return fila_vazia;
 };
 
@@ -20,8 +18,8 @@ struct fila_t *fila_destroi(struct fila_t *f) {
         if (f == NULL){
                 return NULL;
         }
-        struct fila_nodo_t *aux_atual = f->prim;
-        struct fila_nodo_t *aux_prox;
+        struct nodofila *aux_atual = f->prim;
+        struct nodofila *aux_prox;
         while (aux_atual != NULL){
                 aux_prox = aux_atual->prox;
                 free(aux_atual);
@@ -32,32 +30,33 @@ struct fila_t *fila_destroi(struct fila_t *f) {
         return NULL;
 };
 
+
 /* insere um elemento no fim da fila */
-int fila_insere(struct fila_t *f, int item){
-        if (!(struct fila_nodo_t *nodo = malloc(sizeof(struct fila_nodo_t)))) {
+int fila_insere(struct fila_t *f, struct nodofila *item){
+        if (!(struct nodofila *novo = malloc(sizeof(struct nodofila)))) {
                 fprintf(stderr, "Falha ao alocar memoria.\n");
                 exit(1);
         }
         
-        if (!(f) || !(nodo))
+        if (!(f) || !(novo))
                 return 0;
-        nodo->item = item;
-        nodo->prox = NULL;
+        novo->item = item;
+        novo->prox = NULL;
         if (f->num == 0)
-                f->prim = nodo;
+                f->prim = novo;
         else
-                f->ult->prox = nodo;
-        f->ult = nodo;
+                f->ult->prox = novo;
+        f->ult = novo;
         f->num++;
         return 1;
 }
 
 /* retira um elemento do comeco da fila, por ordem de chegada */
-int fila_retira(struct fila_t *f, int *item){
+int fila_retira(struct fila_t *f, struct nodofila *item){
         if (!(f) || !(item) || f->num == 0)
                 return 0;
-        *item = f->prim->item;
-        struct fila_nodo_t *aux = f->prim;
+        item = f->prim->item;
+        struct nodofila *aux = f->prim;
         f->prim = aux->prox;
         free(aux);
         f->num--;
@@ -78,10 +77,10 @@ int fila_tamanho(struct fila_t *f){
 void fila_imprime(struct fila_t *f){
         if (f == NULL || f->num == 0)
                 return;
-        struct fila_nodo_t *aux = f->prim;
+        struct nodofila *aux = f->prim;
         while (aux->prox != NULL){
-                printf("%d ", aux->item);
+                printf("%d ", aux->item->chave);
                 aux = aux->prox;
         }
-        printf("%d", aux->item);
+        printf("%d", aux->item->chave);
 }
