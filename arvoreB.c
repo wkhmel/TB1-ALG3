@@ -148,7 +148,7 @@ void imprimirNodoLargura(struct nodo *no) {
     int32_t nivel = 0;
     while (bfs->num > 0) {
         /* guardo a quantidade de nodos que espero nesse mesmo nível */
-        int 32_t qtdNodos = bfs->num;
+        int32_t qtdNodos = bfs->num;
         imprimirNivel(nivel);
 
         /* loop para printar os nodos do mesmo nível primeiro */
@@ -198,7 +198,7 @@ void imprimirNodoOrdem(struct nodo *no) {
             if (!no->ehfolha)
                 imprimirNodoOrdem(no->filhos[j]);
             printf(" %d", no->chaves[j]);
-        }
+    }
     
     if (!no->ehfolha)
         imprimirNodoOrdem(no->filhos[j])
