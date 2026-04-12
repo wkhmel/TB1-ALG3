@@ -24,7 +24,7 @@ struct fila_t *fila_cria ();
 void fila_destroi (struct fila_t *f);
 
 /* insere um nodo no final da fila seguindo a politica FIFO. */
-void fila_insere (struct fila_t *f, struct nodofila *item);
+void fila_insere (struct fila_t *f, struct nodo *item);
 
 /* retira o primeiro nodo da fila e o retorna */
 struct nodo *fila_retira (struct fila_t *f);
