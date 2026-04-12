@@ -60,13 +60,13 @@ int fila_insere(struct fila_t *f, struct nodo *item) {
         return 1;
 }
 
-/* retira um elemento do começo da fila, por ordem de chegada */
-int fila_retira(struct fila_t *f, struct nodo *item) {
+/* retira um elemento do começo da fila, por ordem de chegada, e o retorna */
+struct nodo *fila_retira(struct fila_t *f) {
         
         if (!f || !item || f->num == 0)
-                return 0;
+                return NULL;
         
-        item = f->prim->item;
+        struct nodo *removido = f->prim->item;
         struct nodofila *aux = f->prim;
         f->prim = aux->prox;
         free(aux);
@@ -75,7 +75,7 @@ int fila_retira(struct fila_t *f, struct nodo *item) {
         if (f->prim == NULL)
                 f->ult = NULL;
         
-        return 1;
+        return removido;
 }
 
 /* retorna o tamanho da fila */
