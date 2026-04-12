@@ -6,7 +6,11 @@
 /* cria uma fila sem nada */
 struct fila_t *fila_cria() {
         struct fila_t *vazia = malloc(sizeof(struct fila_t));
-        verificaMemoria(vazia);
+        
+        if (!vazia) {
+                fprintf("Falha ao alocar memoria.\n");
+                exit(1);
+        }
         
         vazia->prim = vazia->ult = NULL;
         vazia->num = 0;
@@ -37,7 +41,11 @@ void fila_insere(struct fila_t *f, struct nodo *item) {
                 return;
         
         struct nodofila *novo = malloc(sizeof(struct nodofila));
-        verificaMemoria(novo);
+        
+        if (!novo) {
+                fprintf("Falha ao alocar memoria.\n");
+                exit(1);
+        }
         
         novo->item = item;
         novo->prox = NULL;
