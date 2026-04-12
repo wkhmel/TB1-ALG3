@@ -2,34 +2,33 @@
 #define FILA_H
 #include <stdio.h>
 #include <stdlib.h>
+#include "arvoreB.h"
 
-// descreve um nodo da fila
-struct fila_nodo_t
+/* descreve uma fila */
+struct fila_t
 {
-        struct nodo **nodos;            // item associado ao nodo
+        struct nodo **nodos; /* vetor de nodos */            
+        int num; /* número de itens na fila */
 };
 
-// Cria uma fila vazia.
-// Retorno: ponteiro para a fila criada ou NULL se erro.
+/* cria uma fila vazia, retornando um ponteiro para a fila criada ou NULL se erro. */
 struct fila_t *fila_cria ();
 
-// Libera todas as estruturas de dados da fila, inclusive os itens.
-// Retorno: NULL.
+/* libera todas as estruturas de dados da fila, inclusive os itens. */
+/* retorna NULL */
 struct fila_t *fila_destroi (struct fila_t *f);
 
-// Insere um item no final da fila (politica FIFO).
-// Retorno: 1 se tiver sucesso ou 0 se falhar.
-int fila_insere (struct fila_t *f, int item);
+/* insere um nodo no final da fila seguindo a politica FIFO. */
+/* retorna 1 se tiver sucesso ou 0 se falhar. */
+int fila_insere (struct fila_t *f, struct nodo *item);
 
-// Retira o primeiro item da fila e o devolve
-// Retorno 1 se a operação foi bem sucedida e 0 caso contrário
-int fila_retira (struct fila_t *f, int *item);
+/* retira o primeiro nodo da fila e o devolve, retornando 1 em sucesso e 0 c.c. */
+int fila_retira (struct fila_t *f, struct nodo *item);
 
-// Informa o número de itens na fila.
-// Retorno: N >= 0 ou -1 se erro.
+/* retorna o número de itens na fila ou -1 em caso de erro. */
 int fila_tamanho (struct fila_t *f);
 
-// Imprime o conteúdo da fila
+/* imprime o conteúdo da fila */
 void fila_imprime (struct fila_t *f);
 
 #endif
