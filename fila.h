@@ -5,7 +5,7 @@
 #include "arvoreB.h"
 
 struct nodofila {
-        struct nodo *no;
+        struct nodo *item;
         struct nodofila *prox;
 };
 
