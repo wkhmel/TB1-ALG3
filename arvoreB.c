@@ -201,7 +201,7 @@ void imprimirNodoOrdem(struct nodo *no) {
     }
     
     if (!no->ehfolha)
-        imprimirNodoOrdem(no->filhos[j])
+        imprimirNodoOrdem(no->filhos[j]);
 }
 
 
@@ -221,7 +221,7 @@ struct nodo *buscarNodoB(struct nodo *no, int32_t chave, int32_t *idxEncontrado)
     while (i < no->n && chave < no->chaves[i])
         i++;
     
-    if (i < no->n && chave = no->chaves[i]) {
+    if (i < no->n && chave == no->chaves[i]) {
         *idxEncontrado = i;
         return no; 
     }
@@ -232,7 +232,7 @@ struct nodo *buscarNodoB(struct nodo *no, int32_t chave, int32_t *idxEncontrado)
     return buscarNodoB(no->filhos[i], chave, idxEncontrado);
 }
 
-struct nodo *buscarArvoreB(struct arvoreB *arvore, int32_t chave, int32t *idxEncontrado) {
+struct nodo *buscarArvoreB(struct arvoreB *arvore, int32_t chave, int32_t *idxEncontrado) {
     if (!arvore || !arvore->raiz)
         return NULL;
 
