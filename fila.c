@@ -5,22 +5,19 @@
 
 /* cria uma fila sem nada */
 struct fila_t *fila_cria() {
-        if (!(struct fila_t *vazia = malloc(sizeof(struct fila_t)))) {
-                fprintf(stderr, "Falha ao alocar memoria.\n");
-                exit(1);
-        }
-
+        struct fila_t *vazia = malloc(sizeof(struct fila_t));
+        verificaMemoria(vazia);
+        
         vazia->prim = vazia->ult = NULL;
         vazia->num = 0;
         
         return vazia;
-};
+}
 
 /* retorna uma fila vazia, com todos os elementos e estruturas destruidos */
-struct fila_t *fila_destroi(struct fila_t *f) {
-        if (f == NULL) {
-                return NULL;
-        }
+void fila_destroi(struct fila_t *f) {
+        if (f == NULL)
+                return;
         
         struct nodofila *atual = f->prim;
         struct nodofila *aux_prox;
@@ -31,20 +28,16 @@ struct fila_t *fila_destroi(struct fila_t *f) {
                 atual = aux_prox;
         }
         
-        free(f);
-        return NULL;
-};
-
+        free(f);     
+}
 
 /* insere um elemento no fim da fila */
-int fila_insere(struct fila_t *f, struct nodo *item) {
+void fila_insere(struct fila_t *f, struct nodo *item) {
         if (!f)
-                return 0;
+                return;
         
-        if (!(struct nodofila *novo = malloc(sizeof(struct nodofila)))) {
-                fprintf(stderr, "Falha ao alocar memoria.\n");
-                exit(1);
-        }
+        struct nodofila *novo = malloc(sizeof(struct nodofila));
+        verificaMemoria(novo);
         
         novo->item = item;
         novo->prox = NULL;
@@ -56,8 +49,6 @@ int fila_insere(struct fila_t *f, struct nodo *item) {
         
         f->ult = novo;
         f->num++;
-        
-        return 1;
 }
 
 /* retira um elemento do começo da fila, por ordem de chegada, e o retorna */
@@ -84,19 +75,4 @@ int fila_tamanho(struct fila_t *f) {
                 return -1;
         
         return f->num;
-}
-
-/* imprime todos os elementos da fila */
-void fila_imprime(struct fila_t *f) {
-        if (f == NULL || f->num == 0)
-                return;
-
-        struct nodofila *aux = f->prim;
-        while (aux != NULL) {
-                for (int i = 0; i < aux->item->; i++) {
-                        printf("%d ", aux->item->chaves[i];
-                }
-                aux = aux->prox;
-        }
-        printf("\n");
 }
