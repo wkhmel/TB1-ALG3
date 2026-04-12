@@ -4,6 +4,10 @@
 #include "arvoreB.h"
 
 struct arvoreB* criarArvoreB(int32_t t_arvore) {
+    /* o t tem que ser maior ou igual a 2. */
+    if (t_arvore < 2)
+        return NULL;
+    
     if (!(struct arvoreB *b = malloc(sizeof(struct arvoreB)))) {
         fprintf(stderr, "Falha ao alocar memoria.\n");
         exit(1);
