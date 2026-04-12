@@ -6,16 +6,7 @@
 // descreve um nodo da fila
 struct fila_nodo_t
 {
-        int item;                                       // item associado ao nodo
-        struct fila_nodo_t *prox;       // próximo nodo
-};
-
-// descreve uma fila
-struct fila_t
-{
-        struct fila_nodo_t *prim ;      // primeiro nodo da fila
-        struct fila_nodo_t *ult ;       // último nodo da fila
-        int num ;                                       // número de itens na fila
+        struct nodo **nodos;            // item associado ao nodo
 };
 
 // Cria uma fila vazia.
