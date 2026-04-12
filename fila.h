@@ -7,7 +7,7 @@
 struct nodofila {
         struct nodo *no;
         struct nodofila *prox;
-}
+};
 
 /* descreve uma fila */
 struct fila_t
