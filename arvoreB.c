@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "arvoreB.h"
+#include "fila.h"
 
 struct arvoreB* criarArvoreB(int32_t t_arvore) {
     /* o t tem que ser maior ou igual a 2. */
@@ -97,7 +98,7 @@ void inserirNaoCheio(struct nodo *no, int32_t chave, int32_t t_arvore) {
 void inserirArvoreB(struct arvoreB* arvore, int32_t chave) {
     if (!arvore || !arvore->raiz)
         return;
-  
+
     /* verificando se a raiz está cheia */
     if (arvore->raiz->n == 2*(arvore->t_arvore) - 1) {
         struct nodo *novo = malloc(sizeof(struct nodo));
@@ -106,11 +107,11 @@ void inserirArvoreB(struct arvoreB* arvore, int32_t chave) {
             fprintf(stderr, "Falha ao alocar memoria.\n");
             exit(1);
         }
-        
+
+        novo->filhos[0] = arvore->raiz;
         arvore->raiz = novo;
         novo->ehfolha = false;
         novo->n = 0;
-        novo->filhos[0] = aux;
 
         novo = repartirFilho(novo, 0, arvore->t_arvore);
         inserirNaoCheio(novo, chave, arvore->t_arvore);
