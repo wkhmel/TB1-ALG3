@@ -27,7 +27,7 @@ struct nodo *repartirFilho(struct nodo *no, int32_t idxSplit, int32_t t_arvore) 
     struct nodo *div = calloc(sizeof(struct nodo));
     
     if (!div) {
-        fprintf("Erro ao alocar memoria.\n");
+        fprintf("Falha ao alocar memoria.\n");
         exit(1);
     }
   
@@ -103,7 +103,7 @@ void inserirArvoreB(struct arvoreB* arvore, int32_t chave) {
         struct nodo *novo = malloc(sizeof(struct nodo));
 
         if (!novo) {
-            fprintf("Erro ao alocar memoria.\n");
+            fprintf("Falha ao alocar memoria.\n");
             exit(1);
         }
         
