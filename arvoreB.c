@@ -110,16 +110,69 @@ void inserirArvoreB(struct arvoreB* arvore, int32_t chave) {
         inserirNaoCheio(arvore->raiz, chave, arvore->t_arvore);
 }
 
+void imprimirDados(struct nodo *no) {
+    /* F = folha; I = nodo interno */
+    if (no->ehfolha)
+        printf("F ");
+    else
+        printf("I ");
+
+    /* imprimindo a quantidade de chaves no formato adequado */
+    printf("(n:%d) ", no->n);
+}
+
+void imprimirNivel(int32_t nivel) {
+    printf("----//----\n");
+    printf("Nivel %d\n", nivel);
+    printf("----//----\n");
+}
+
 void imprimirNodoLargura(struct nodo *no) {
     if (!no)
         return;
 
+    /* criando fila "bfs" (breadth-first search) */
     struct fila_t *bfs = fila_cria();
-    if (!(fila_insere
-    
+    fila_insere(bfs, no);
+
+    int32_t nivel = 0;
+    while (bfs->num > 0) {
+        /* guardo a quantidade de nodos que espero nesse mesmo nível */
+        int 32_t qtdNodos = bfs->num;
+        imprimirNivel(nivel);
+
+        /* loop para printar os nodos do mesmo nível primeiro */
+        /* só sai do loop quanto k ultrapassa a quantidade de nodos do nível */
+        for (int k = 0; k <= qtdNodos; k++) {
+            struct nodo *aux = fila_retira(bfs);
+            
+            imprimirDados(aux);
+
+            printf("[");
+            int i = 0;
+            while (i < aux->n - 1) {
+                printf("%d ", aux->chaves[i]);
+                i++;
+            }
+            /* o último nodo eu imprimo para fora para não ter espaço antes do colchete */
+            printf("%d]", aux->chaves[i]);
+
+        /* inserindo nodos filhos do atual, se houver */
+            if (!aux->ehfolha) {
+                for (int i = 0; i <= aux->n; i++) {
+                    if (aux->filhos[i] != NULL)
+                            fila_insere(bfs, no->filhos[i]);
+                }   
+            }
+        }
+        /* linha entre níveis */
+        printf("\n");
+        nivel++;
+    }
+    fila_destroi(bfs);
 }
 
-/* impressão em largura */
+/* impressão em largura que passa por todos os nodos por meio de uma auxiliar */
 void imprimirArvoreB(struct arvoreB* arvore) {
     if (!arvore)
         return;
@@ -136,6 +189,7 @@ void imprimirNodoOrdem(struct nodo *no) {
                 imprimirNodoOrdem(no->filhos[j]);
             printf(" %d", no->chaves[j]);
         }
+    
     if (!no->ehfolha)
         imprimirNodoOrdem(no->filhos[j])
 }
@@ -196,6 +250,5 @@ void deletarArvore(struct arvoreB* arvore) {
 
     free(arvore);
 }
-  
-}
+
 
