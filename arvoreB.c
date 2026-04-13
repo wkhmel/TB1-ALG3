@@ -34,10 +34,11 @@ struct nodo *criarNodoB(int32_t t_arvore, bool ehfolha) {
     
 }
 
-struct arvoreB* criarArvoreB(int32_t t_arvore) {
+struct arvoreB *criarArvoreB(int32_t t_arvore) {
     /* o t tem que ser maior ou igual a 2. */
-    if (t_arvore < 2)
+    if (t_arvore < 2) {
         return NULL;
+    }
     
     struct arvoreB *b = malloc(sizeof(struct arvoreB));
     
@@ -59,10 +60,11 @@ struct nodo *repartirFilho(struct nodo *no, int32_t idxSplit, int32_t t_arvore) 
     struct nodo *div = criarNodoB(t_arvore, aux->ehfolha);
     div->n = t_arvore - 1; 
 
-    for (int32_t i = 0; i < div->n; i++)
+    for (int32_t i = 0; i < div->n; i++) {
     /* recebendo as chaves mais à direita de aux */
         div->chaves[i] = aux->chaves[i + t_arvore];
-
+    }
+    
     /* se forem nós internos, vou pegar os filhos mais à direita de aux também */
     if (!div->ehfolha) {
         for (int32_t i = 0; i < t_arvore; i++) {
@@ -73,15 +75,17 @@ struct nodo *repartirFilho(struct nodo *no, int32_t idxSplit, int32_t t_arvore) 
     /* agora a quantidade de chaves diminuiu em aux */
     aux->n = t_arvore - 1;
 
-    for (int32_t i = no->n; i >= idxSplit + 1; i--)
+    for (int32_t i = no->n; i >= idxSplit + 1; i--) {
         no->filhos[i + 1] = no->filhos[i];
-
+    }
+    
     no->filhos[idxSplit + 1] = div;
 
     /* loop para deixar espaço para a chave mediana */
-    for (int32_t i = no->n - 1; i >= idxSplit; i--)
+    for (int32_t i = no->n - 1; i >= idxSplit; i--) {
         no->chaves[i + 1] = no->chaves[i];
-
+    }
+    
     no->chaves[idxSplit] = aux->chaves[t_arvore - 1]; /* chave mediana está no lugar dela */
     no->n++; /* o pai (que certamente não estava cheio) agora tem mais uma chave! */
     
@@ -100,17 +104,18 @@ void inserirNaoCheio(struct nodo *no, int32_t chave, int32_t t_arvore) {
         
         no->chaves[i + 1] = chave;
         no->n++;
-    }
-    else {
-        while (i >= 0 && chave < no->chaves[i])
+    } else {
+        while (i >= 0 && chave < no->chaves[i]) {
             i--;
+        }
         i++;
         
         if (no->filhos[i]->n == 2*(t_arvore) - 1) {
             no->filhos[i] = repartirFilho(no, i, t_arvore);
         /* depois da divisão, pode ser q a chave seja maior que a chave mediana do pai (q foi dividida) */
-            if (chave > no->chaves[i])
+            if (chave > no->chaves[i]) {
                 i++;
+            }
         }
 
         inserirNaoCheio(no->filhos[i], chave, t_arvore);
@@ -119,8 +124,9 @@ void inserirNaoCheio(struct nodo *no, int32_t chave, int32_t t_arvore) {
 }
 
 void inserirArvoreB(struct arvoreB* arvore, int32_t chave) {
-    if (!arvore || !arvore->raiz)
+    if (!arvore || !arvore->raiz) {
         return;
+    }
 
     /* verificando se a raiz está cheia */
     if (arvore->raiz->n == 2*(arvore->t_arvore) - 1) {
@@ -131,14 +137,15 @@ void inserirArvoreB(struct arvoreB* arvore, int32_t chave) {
 
         novo = repartirFilho(novo, 0, arvore->t_arvore);
         inserirNaoCheio(novo, chave, arvore->t_arvore);
-    }
-    else
+    } else {
         inserirNaoCheio(arvore->raiz, chave, arvore->t_arvore);
+    }
 }
 
 void imprimirNodoLargura(struct nodo *no) {
-    if (!no)
+    if (!no) {
         return;
+    }
 
     /* criando fila "bfs" (breadth-first search) */
     struct fila_t *bfs = criarFila();
@@ -158,14 +165,8 @@ void imprimirNodoLargura(struct nodo *no) {
         for (int k = 0; k < qtdNodos; k++) {
             struct nodo *aux = retirarFila(bfs);
             
-            if (aux->ehfolha)
-                printf("F ");
-            else
-                printf("I ");
-
-            printf("(n:%d) ", aux->n);
+            printf("%c (n:%d) [", aux->ehfolha ? 'F' : 'I', aux->n);
             
-            printf("[");
             int i = 0;
             while (i < aux->n - 1) {
                 printf("%d ", aux->chaves[i]);
@@ -177,14 +178,16 @@ void imprimirNodoLargura(struct nodo *no) {
         /* inserindo nodos filhos do atual, se houver */
             if (!aux->ehfolha) {
                 for (int i = 0; i <= aux->n; i++) {
-                    if (aux->filhos[i] != NULL)
+                    if (aux->filhos[i] != NULL) {
                             inserirFila(bfs, aux->filhos[i]);
+                    }
                 }   
             }
 
         /* desde que não seja o último nodo, colocar espaçamento entre nodos */
-            if (k < qtdNodos - 1)
+            if (k < qtdNodos - 1) {
                 printf("   ");
+            }
         }
         /* linha entre níveis */
         printf("\n");
@@ -195,33 +198,38 @@ void imprimirNodoLargura(struct nodo *no) {
 
 /* impressão em largura que passa por todos os nodos por meio de uma auxiliar */
 void imprimirArvoreB(struct arvoreB* arvore) {
-    if (!arvore)
+    if (!arvore) {
         return;
+    }
     
     imprimirNodoLargura(arvore->raiz);
 }
 
 void imprimirNodoOrdem(struct nodo *no) {
-    if (!no)   
+    if (!no) {
         return;
+    }
 
     int i = 0;
     while (i < no->n) {
-            if (!no->ehfolha)
+            if (!no->ehfolha) {
                 imprimirNodoOrdem(no->filhos[i]);
+            }
             printf(" %d", no->chaves[i]);
             i++;
     }
     
-    if (!no->ehfolha)
+    if (!no->ehfolha) {
         imprimirNodoOrdem(no->filhos[i]);
+    }
 }
 
 
 /* impressão em ordem */
 void imprimirEmOrdem(struct arvoreB* arvore) {
-    if (!arvore)
+    if (!arvore) {
         return;
+    }
 
     printf("Em ordem:");
 
@@ -231,34 +239,39 @@ void imprimirEmOrdem(struct arvoreB* arvore) {
 struct nodo *buscarNodoB(struct nodo *no, int32_t chave, int32_t *idxEncontrado) {
     int i = 0;
     
-    while (i < no->n && chave > no->chaves[i])
+    while (i < no->n && chave > no->chaves[i]) {
         i++;
+    }
     
     if (i < no->n && chave == no->chaves[i]) {
         *idxEncontrado = i;
         return no; 
     }
 
-    if (no->ehfolha)
+    if (no->ehfolha) {
         return NULL;
+    }
 
     return buscarNodoB(no->filhos[i], chave, idxEncontrado);
 }
 
 struct nodo *buscarArvoreB(struct arvoreB *arvore, int32_t chave, int32_t *idxEncontrado) {
-    if (!arvore || !arvore->raiz || !idxEncontrado)
+    if (!arvore || !arvore->raiz || !idxEncontrado) {
         return NULL;
+    }
 
     return buscarNodoB(arvore->raiz, chave, idxEncontrado);
 }
 
 void liberarNodo(struct nodo *no) {
-    if (!no)
+    if (!no) {
         return;
+    }
 
     if (!no->ehfolha) {
-        for (int i = 0; i <= no->n; i++)
+        for (int i = 0; i <= no->n; i++) {
             liberarNodo(no->filhos[i]);
+        }
     }
 
     free(no->filhos);
@@ -267,8 +280,9 @@ void liberarNodo(struct nodo *no) {
 }
 
 void deletarArvore(struct arvoreB* arvore) {
-    if (!arvore)
+    if (!arvore) {
         return;
+    }
 
     liberarNodo(arvore->raiz);
     arvore->raiz = NULL;
