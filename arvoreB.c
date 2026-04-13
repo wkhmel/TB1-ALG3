@@ -261,8 +261,8 @@ void liberarNodo(struct nodo *no) {
             liberarNodo(no->filhos[i]);
     }
 
-    free(no->filhos[i]);
-    free(no->chaves[i]);
+    free(no->filhos);
+    free(no->chaves);
     free(no);
 }
 
