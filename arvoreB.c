@@ -23,7 +23,7 @@ struct nodo *criarNodoB(int32_t t_arvore, bool ehfolha) {
         exit(1);
     }
 
-    novo->filhos = malloc((2*(t_arvore) - 1)*sizeof(struct nodo));
+    novo->filhos = malloc((2*t_arvore)*sizeof(struct nodo));
 
     if (!novo->filhos) {
         fprintf(stderr, "Falha ao alocar memoria.\n");
@@ -51,26 +51,19 @@ struct arvoreB* criarArvoreB(int32_t t_arvore) {
 }
 
 struct nodo *repartirFilho(struct nodo *no, int32_t idxSplit, int32_t t_arvore) {
-    /* chave "nova" que quero inserir no nodo pai. */
-    /* usei calloc para não ter que inicializar cada um dos filhos como NULL */
-    struct nodo *div = calloc(1, sizeof(struct nodo));
+    struct nodo *aux = no->filhos[idxSplit]; /* nodo cheio a ser dividido */
     
-    if (!div) {
-        fprintf(stderr, "Falha ao alocar memoria.\n");
-        exit(1);
-    }
-  
-    struct nodo *aux = no->filhos[idxSplit]; /* nodo cheio que quero dividir */
-    div->ehfolha = aux->ehfolha; 
+    /* chave "nova" que quero inserir no nodo pai. */
+    struct nodo *div = criarNodoB(t_arvore, aux->ehfolha);
     div->n = t_arvore - 1; 
 
-    for (int i = 0; i < div->n; i++)
+    for (int32_t i = 0; i < div->n; i++)
     /* recebendo as chaves mais à direita de aux */
         div->chaves[i] = aux->chaves[i + t_arvore];
 
     /* se forem nós internos, vou pegar os filhos mais à direita de aux também */
     if (!div->ehfolha) {
-        for (int i = 0; i < t_arvore; i++) {
+        for (int32_t i = 0; i < t_arvore; i++) {
             div->filhos[i] = aux->filhos[i + t_arvore];
         }
     }
@@ -78,13 +71,13 @@ struct nodo *repartirFilho(struct nodo *no, int32_t idxSplit, int32_t t_arvore) 
     /* agora a quantidade de chaves diminuiu em aux */
     aux->n = t_arvore - 1;
 
-    for (int i = no->n; i >= idxSplit + 1; i--)
+    for (int32_t i = no->n; i >= idxSplit + 1; i--)
         no->filhos[i + 1] = no->filhos[i];
 
     no->filhos[idxSplit + 1] = div;
 
     /* loop para deixar espaço para a chave mediana */
-    for (int i = no->n - 1; i >= idxSplit; i--)
+    for (int32_t i = no->n - 1; i >= idxSplit; i--)
         no->chaves[i + 1] = no->chaves[i];
 
     no->chaves[idxSplit] = aux->chaves[t_arvore - 1]; /* chave mediana está no lugar dela */
@@ -94,7 +87,7 @@ struct nodo *repartirFilho(struct nodo *no, int32_t idxSplit, int32_t t_arvore) 
 }
 
 void inserirNaoCheio(struct nodo *no, int32_t chave, int32_t t_arvore) {
-    int i = no->n - 1;
+    int32_t i = no->n - 1; /* vai de 0 a n-1 para dar n chaves */
     
     /* procurando o nodo mais à direita cuja chave seja menor ou igual à chave */
     if (no->ehfolha) {
@@ -113,7 +106,7 @@ void inserirNaoCheio(struct nodo *no, int32_t chave, int32_t t_arvore) {
         
         if (no->filhos[i]->n == 2*(t_arvore) - 1) {
             no->filhos[i] = repartirFilho(no, i, t_arvore);
-        /* depois da divisão, pode ser q a chave seja maior que a chave mediana do pai (que foi dividida) */
+        /* depois da divisão, pode ser q a chave seja maior que a chave mediana do pai (q foi dividida) */
             if (chave > no->chaves[i])
                 i++;
         }
@@ -129,34 +122,16 @@ void inserirArvoreB(struct arvoreB* arvore, int32_t chave) {
 
     /* verificando se a raiz está cheia */
     if (arvore->raiz->n == 2*(arvore->t_arvore) - 1) {
-        struct nodo *novo = malloc(sizeof(struct nodo));
-
-        if (!novo) {
-            fprintf(stderr, "Falha ao alocar memoria.\n");
-            exit(1);
-        }
+        struct nodo *novo = criarNodoB(arvore->t_arvore, false);
 
         novo->filhos[0] = arvore->raiz;
         arvore->raiz = novo;
-        novo->ehfolha = false;
-        novo->n = 0;
 
         novo = repartirFilho(novo, 0, arvore->t_arvore);
         inserirNaoCheio(novo, chave, arvore->t_arvore);
     }
     else
         inserirNaoCheio(arvore->raiz, chave, arvore->t_arvore);
-}
-
-void imprimirDados(struct nodo *no) {
-    /* F = folha; I = nodo interno */
-    if (no->ehfolha)
-        printf("F ");
-    else
-        printf("I ");
-
-    /* imprimindo a quantidade de chaves no formato adequado */
-    printf("(n:%d) ", no->n);
 }
 
 void imprimirNodoLargura(struct nodo *no) {
