@@ -34,12 +34,6 @@ void inserirNaoCheio(struct nodo *no, int32_t chave, int32_t t_arvore);
 /* vai do começo da árvore repartindo todos os nodos cheios que for encontrando e usando a função inserirNaoCheio para colocar a chave passada na árvore. */
 void inserirArvoreB(struct arvoreB* arvore, int32_t chave);
 
-/* imprime o tipo de nodo (I ou F) e a quantidade de chaves desse nodo */
-void imprimirDados(struct nodo *no);
-
-/* imprime o nível na formatação requerida, com os devidos espaçamentos */
-void imprimirNivel(int32_t nivel);
-
 /* função auxiliar que imprime os nodos em largura por meio de uma fila, destruindo-a posteriormente */
 void imprimirNodoLargura(struct nodo *no);
 
