@@ -8,4 +8,14 @@ int main() {
 
   struct arvoreB *arv = criarArvoreB(t);
 
+  inserirArvoreB(arv, 67);
+  inserirArvoreB(arv, 89);
+  inserirArvoreB(arv, 44);
+  inserirArvoreB(arv, 11);
+  inserirArvoreB(arv, 10);
+  inserirArvoreB(arv, 99);
+
+  imprimirNodoLargura(arv->raiz);
+
+  return 0;
 }
