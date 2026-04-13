@@ -16,14 +16,14 @@ struct nodo *criarNodoB(int32_t t_arvore, bool ehfolha) {
     novo->ehfolha = ehfolha;
 
     /* alocando o maior número possível de filhos de acordo com o t passado */
-    novo->chaves = calloc((2*(t_arvore) - 1) * sizeof(int32_t));
+    novo->chaves = calloc((2 * t_arvore - 1), sizeof(int32_t));
 
     if (!novo->chaves) {
         fprintf(stderr, "Falha ao alocar memoria.\n");
         exit(1);
     }
 
-    novo->filhos = calloc((2*t_arvore) * sizeof(struct nodo*));
+    novo->filhos = calloc((2 * t_arvore), sizeof(struct nodo*));
 
     if (!novo->filhos) {
         fprintf(stderr, "Falha ao alocar memoria.\n");
