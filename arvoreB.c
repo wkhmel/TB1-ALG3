@@ -158,12 +158,12 @@ void imprimirNodoLargura(struct nodo *no) {
         for (int k = 0; k < qtdNodos; k++) {
             struct nodo *aux = retirarFila(bfs);
             
-            if (no->ehfolha)
+            if (aux->ehfolha)
                 printf("F ");
             else
                 printf("I ");
 
-            printf("(n:%d) ", no->n);
+            printf("(n:%d) ", aux->n);
             
             printf("[");
             int i = 0;
@@ -178,7 +178,7 @@ void imprimirNodoLargura(struct nodo *no) {
             if (!aux->ehfolha) {
                 for (int i = 0; i <= aux->n; i++) {
                     if (aux->filhos[i] != NULL)
-                            inserirFila(bfs, no->filhos[i]);
+                            inserirFila(bfs, aux->filhos[i]);
                 }   
             }
 
@@ -231,7 +231,7 @@ void imprimirEmOrdem(struct arvoreB* arvore) {
 struct nodo *buscarNodoB(struct nodo *no, int32_t chave, int32_t *idxEncontrado) {
     int i = 0;
     
-    while (i < no->n && chave < no->chaves[i])
+    while (i < no->n && chave > no->chaves[i])
         i++;
     
     if (i < no->n && chave == no->chaves[i]) {
@@ -261,6 +261,8 @@ void liberarNodo(struct nodo *no) {
             liberarNodo(no->filhos[i]);
     }
 
+    free(no->filhos[i]);
+    free(no->chaves[i]);
     free(no);
 }
 
