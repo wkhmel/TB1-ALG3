@@ -153,7 +153,7 @@ void imprimirNodoLargura(struct nodo *no) {
 
         /* loop para printar os nodos do mesmo nível primeiro */
         /* só sai do loop quando k ultrapassa a quantidade de nodos do nível */
-        for (int k = 0; k <= qtdNodos; k++) {
+        for (int k = 0; k < qtdNodos; k++) {
             struct nodo *aux = retirarFila(bfs);
             
             if (no->ehfolha)
@@ -179,6 +179,10 @@ void imprimirNodoLargura(struct nodo *no) {
                             inserirFila(bfs, no->filhos[i]);
                 }   
             }
+
+        /* desde que não seja o último nodo, colocar espaçamento entre nodos */
+            if (k < qtdNodos - 1)
+                printf("   ");
         }
         /* linha entre níveis */
         printf("\n");
