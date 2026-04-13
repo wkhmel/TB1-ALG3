@@ -41,7 +41,7 @@ void imprimirNodoLargura(struct nodo *no);
 void imprimirArvoreB(struct arvoreB* arvore);
 
 /* essa função auxiliar imprime os nodos recursivamente em ordem não decrescente: esquerda -> atual -> direita. */
-void imprimirNodoOrdem(struct nodo *no) {
+void imprimirNodoOrdem(struct nodo *no);
 
 /* imprime uma árvore B por meio da função acima. */
 void imprimirEmOrdem(struct arvoreB* arvore);
