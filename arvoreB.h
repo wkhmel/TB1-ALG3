@@ -19,6 +19,9 @@ struct arvoreB {
   int32_t t_arvore;
 };
 
+/* cria um nodo e aloca espaço para a maior quantidade possível de chaves e filhos (2t - 1).*/
+struct nodo *criarNodoB(int32_t t_arvore, bool ehfolha);
+
 /* a partir de um t >= 2, cria uma árvore b sem nodos e a retorna. */
 struct arvoreB* criarArvoreB(int32_t t_arvore);
 
