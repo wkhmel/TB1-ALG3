@@ -16,19 +16,21 @@ struct nodo *criarNodoB(int32_t t_arvore, bool ehfolha) {
     novo->ehfolha = ehfolha;
 
     /* alocando o maior número possível de filhos de acordo com o t passado */
-    novo->chaves = malloc((2*(t_arvore) - 1)*sizeof(int32_t chaves);
+    novo->chaves = calloc((2*(t_arvore) - 1) * sizeof(int32_t));
 
     if (!novo->chaves) {
         fprintf(stderr, "Falha ao alocar memoria.\n");
         exit(1);
     }
 
-    novo->filhos = malloc((2*t_arvore)*sizeof(struct nodo));
+    novo->filhos = calloc((2*t_arvore) * sizeof(struct nodo*));
 
     if (!novo->filhos) {
         fprintf(stderr, "Falha ao alocar memoria.\n");
         exit(1);
     }
+
+    return novo;
     
 }
 
@@ -139,7 +141,7 @@ void imprimirNodoLargura(struct nodo *no) {
         return;
 
     /* criando fila "bfs" (breadth-first search) */
-    struct fila_t *bfs = fila_cria();
+    struct fila_t *bfs = criarFila();
     inserirFila(bfs, no);
 
     int32_t nivel = 0;
@@ -196,21 +198,23 @@ void imprimirArvoreB(struct arvoreB* arvore) {
     if (!arvore)
         return;
     
-    imprimirNodoLargura(struct nodo arvore->raiz);
+    imprimirNodoLargura(arvore->raiz);
 }
 
 void imprimirNodoOrdem(struct nodo *no) {
     if (!no)   
         return;
 
-    for (int j = 0; j < no->n; j++) {
+    int i = 0;
+    while (i < no->n) {
             if (!no->ehfolha)
-                imprimirNodoOrdem(no->filhos[j]);
-            printf(" %d", no->chaves[j]);
+                imprimirNodoOrdem(no->filhos[i]);
+            printf(" %d", no->chaves[i]);
+            i++;
     }
     
     if (!no->ehfolha)
-        imprimirNodoOrdem(no->filhos[j]);
+        imprimirNodoOrdem(no->filhos[i]);
 }
 
 
