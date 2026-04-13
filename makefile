@@ -1,7 +1,7 @@
 # makefile ArvoreB
 
 CC      = gcc
-CFLAGS  = -Wall -Wextra -Werror -g -std=c99
+CFLAGS  = -Wall -Wextra -Werror -g
 LDLIBS  = -lm
 MAIN    = arvoremain
 ENTREGA = $(MAIN)
