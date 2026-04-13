@@ -10,7 +10,7 @@ ENTREGA = $(MAIN)
 HDR = arvoreB.h fila.h
 
 # lista de arquivos-objeto
-OBJ = fila.o arvoreB.o
+OBJ = fila.o arvoreB.o arvoremain.o
 
 all: $(MAIN)
 
