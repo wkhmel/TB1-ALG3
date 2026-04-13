@@ -19,8 +19,9 @@ struct fila_t *criarFila() {
 
 /* retorna uma fila vazia, com todos os elementos e estruturas destruidos */
 void destruirFila(struct fila_t *f) {
-        if (f == NULL)
+        if (f == NULL) {
                 return;
+        }
         
         struct nodofila *atual = f->prim;
         struct nodofila *aux_prox;
@@ -36,8 +37,9 @@ void destruirFila(struct fila_t *f) {
 
 /* insere um elemento no fim da fila */
 void inserirFila(struct fila_t *f, struct nodo *item) {
-        if (!f)
+        if (!f) {
                 return;
+        }
         
         struct nodofila *novo = malloc(sizeof(struct nodofila));
         
@@ -49,10 +51,11 @@ void inserirFila(struct fila_t *f, struct nodo *item) {
         novo->item = item;
         novo->prox = NULL;
         
-        if (f->num == 0)
+        if (f->num == 0) {
                 f->prim = novo;
-        else
+        } else {
                 f->ult->prox = novo;
+        }
         
         f->ult = novo;
         f->num++;
@@ -61,8 +64,9 @@ void inserirFila(struct fila_t *f, struct nodo *item) {
 /* retira um elemento do começo da fila, por ordem de chegada, e o retorna */
 struct nodo *retirarFila(struct fila_t *f) {
         
-        if (!f || f->num == 0)
+        if (!f || f->num == 0) {
                 return NULL;
+        }
         
         struct nodo *removido = f->prim->item;
         struct nodofila *aux = f->prim;
@@ -70,8 +74,9 @@ struct nodo *retirarFila(struct fila_t *f) {
         free(aux);
         f->num--;
 
-        if (f->prim == NULL)
+        if (f->prim == NULL) {
                 f->ult = NULL;
+        }
         
         return removido;
 }
