@@ -21,13 +21,14 @@ $(MAIN): $(OBJ)
 # construir os TADs
 fila.o: fila.c fila.h
 arvoreB.o: arvoreB.c arvoreB.h
+arvoremain.o: arvoremain.c $(HDR) 
 
 # executar
-run: $(MAIN)
+run: all
 	./$(MAIN)
 
 # testar no Valgrind
-valgrind: $(MAIN)
+valgrind: all
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(MAIN)
 
 # gerar arquivo TGZ para entregar
