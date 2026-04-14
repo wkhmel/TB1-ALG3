@@ -116,7 +116,7 @@ void inserirNaoCheio(struct nodo *no, int32_t chave, int32_t t_arvore) {
 
         /* reparte este filho caso ele esteja cheio */
         if (no->filhos[i]->n == 2*(t_arvore) - 1) {
-            no->filhos[i] = repartirFilho(no, i, t_arvore);
+            no = repartirFilho(no, i, t_arvore);
         /* depois da divisão, pode ser que a chave seja maior que a chave mediana do pai */
             if (chave > no->chaves[i]) {
                 i++;
