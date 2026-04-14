@@ -15,9 +15,9 @@ int main()
                 return 1;
         
         do {
-                printf("Insira um elemento: ");
+                printf("Insira um elemento (-1 para sair): ");
                 scanf("%d", &x);
-                if (x = -1)
+                if (x == -1)
                         break;
                 printf(" ");
                 inserirArvoreB(arv, x);
@@ -36,7 +36,7 @@ int main()
         
         printf("\n");
 
-        if (BuscarArvoreB(arv, x, &indice)) {
+        if (buscarArvoreB(arv, x, &indice)) {
                 printf("A chave %d foi encontrada com sucesso e esta no indice %d de seu nodo.", x, indice);
         } else {
                 printf("A chave %d nao foi encontrada.", x);
