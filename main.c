@@ -39,9 +39,9 @@ int main()
         printf("\n");
 
         if (buscarArvoreB(arv, x, &indice)) {
-                printf("A chave %d foi encontrada com sucesso e esta no indice %d de seu nodo.", x, indice);
+                printf("A chave %d foi encontrada com sucesso e esta no indice %d de seu nodo.\n", x, indice);
         } else {
-                printf("A chave %d nao foi encontrada.", x);
+                printf("A chave %d nao foi encontrada.\n", x);
         }
 
         deletarArvore(arv);
