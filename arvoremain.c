@@ -31,8 +31,10 @@ int main()
 
         scanf("%d", &x);
 
-        if (x < 0)
+        if (x < 0) {
+                deletarArvore(arv);
                 return 1;
+        }
         
         printf("\n");
 
