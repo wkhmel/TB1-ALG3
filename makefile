@@ -3,8 +3,8 @@
 CC      = gcc
 CFLAGS  = -Wall -Wextra -Werror -g -std=c2x
 LDLIBS  = -lm
-MAIN    = arvoremain
-ENTREGA = $(MAIN)
+MAIN    = prova1_5413
+ENTREGA = prova1_5413
 
 # lista de arquivos de cabeçalho 
 HDR = arvoreB.h fila.h
