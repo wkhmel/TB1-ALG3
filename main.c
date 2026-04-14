@@ -28,14 +28,7 @@ int main()
         } while (x != -1);
 
         printf("Qual elemento deseja buscar? ");
-
         scanf("%d", &x);
-
-        if (x < 0) {
-                deletarArvore(arv);
-                return 1;
-        }
-        
         printf("\n");
 
         if (buscarArvoreB(arv, x, &indice)) {
