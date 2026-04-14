@@ -40,7 +40,7 @@ struct nodo *criarNodoB(int32_t t_arvore, bool ehfolha)
 struct arvoreB *criarArvoreB(int32_t t_arvore) 
 {
         /* o t tem que ser maior ou igual a 2. */
-        if (t_arvore < 2 || t_arvore > (int32_t(sizeof(int32_t))) {
+        if (t_arvore < 2 || t_arvore > 1073741823) {
                 return NULL;
         }
     
