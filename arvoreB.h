@@ -6,17 +6,17 @@
 #include "fila.h"
 
 struct nodo {
-    int32_t n; 
-    /* vetor que guarda as n chaves desse nodo */
-    int32_t *chaves;
-    bool ehfolha; 
-    /* vetor de ponteiros para os filhos */
-    struct nodo **filhos;
+        int32_t n; 
+        /* vetor que guarda as n chaves desse nodo */
+        int32_t *chaves;
+        bool ehfolha; 
+        /* vetor de ponteiros para os filhos */
+        struct nodo **filhos;
 };
 
 struct arvoreB {
-  struct nodo* raiz;
-  int32_t t_arvore;
+        struct nodo* raiz;
+        int32_t t_arvore;
 };
 
 /* cria um nodo e aloca espaço para a maior quantidade possível de chaves e filhos (2t - 1).*/
