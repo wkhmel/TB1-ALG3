@@ -173,12 +173,12 @@ void imprimirNodoLargura(struct nodo *no)
 
                 /* loop para printar os nodos do mesmo nível primeiro */
                 /* só sai do loop quando k ultrapassa a quantidade de nodos do nível */
-                for (int k = 0; k < qtdNodos; k++) {
+                for (int32_t k = 0; k < qtdNodos; k++) {
                         struct nodo *aux = retirarFila(bfs);
             
                         printf("%c (n:%d) [", aux->ehfolha ? 'F' : 'I', aux->n);
             
-                        int i = 0;
+                        int32_t i = 0;
                         while (i < aux->n - 1) {
                                 printf("%d ", aux->chaves[i]);
                                 i++;
@@ -189,7 +189,7 @@ void imprimirNodoLargura(struct nodo *no)
 
                         /* inserindo nodos filhos do atual, se houver */
                         if (!aux->ehfolha) {
-                                for (int i = 0; i <= aux->n; i++) {
+                                for (int32_t i = 0; i <= aux->n; i++) {
                                         if (aux->filhos[i] != NULL) {
                                         inserirFila(bfs, aux->filhos[i]);
                                         }
@@ -224,7 +224,7 @@ void imprimirNodoOrdem(struct nodo *no)
                 return;
         }
 
-        int i = 0;
+        int32_t i = 0;
         while (i < no->n) {
                 if (!no->ehfolha) {
                         /* chama recursivo para os filhos antes de imprimir a chave atual */
@@ -254,7 +254,7 @@ void imprimirEmOrdem(struct arvoreB* arvore)
 
 struct nodo *buscarNodoB(struct nodo *no, int32_t chave, int32_t *idxEncontrado) 
 {
-        int i = 0;
+        int32_t i = 0;
 
         /* loop que vai até onde a chave atual é igual ou maior que a chave desejada */
         while (i < no->n && chave > no->chaves[i]) {
@@ -293,7 +293,7 @@ void liberarNodo(struct nodo *no)
 
         /* libera um por um dos filhos antes, se houver */
         if (!no->ehfolha) {
-                for (int i = 0; i <= no->n; i++) {
+                for (int32_t i = 0; i <= no->n; i++) {
                         liberarNodo(no->filhos[i]);
                 }
         }
