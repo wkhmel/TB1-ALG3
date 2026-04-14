@@ -12,10 +12,9 @@ int main() {
   do {
       scanf("%d", &x);
       inserirArvoreB(arv, x);
+      imprimirArvoreB(arv);
+      imprimirEmOrdem(arv);
   } while (x != -1)
-    
-  imprimirArvoreB(arv);
-  imprimirEmOrdem(arv);
 
   deletarArvore(arv);
   
