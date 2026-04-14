@@ -1,4 +1,4 @@
-/* estilo de identação usado: K&R (Kernighan & Ritchie) */
+/* estilo de indentação usado: K&R (Kernighan & Ritchie) */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -16,14 +16,15 @@ struct nodo *criarNodoB(int32_t t_arvore, bool ehfolha) {
     novo->n = 0;
     novo->ehfolha = ehfolha;
 
-    /* alocando o maior número possível de filhos de acordo com o t passado */
+    /* alocando o maior número possível de chaves de acordo com o t passado */
     novo->chaves = calloc((2 * t_arvore - 1), sizeof(int32_t));
 
     if (!novo->chaves) {
         fprintf(stderr, "Falha ao alocar memoria.\n");
         exit(1);
     }
-
+    
+    /* alocando o maior número possível de filhos de acordo com o t passado */
     novo->filhos = calloc((2 * t_arvore), sizeof(struct nodo*));
 
     if (!novo->filhos) {
@@ -57,16 +58,15 @@ struct arvoreB *criarArvoreB(int32_t t_arvore) {
 struct nodo *repartirFilho(struct nodo *no, int32_t idxSplit, int32_t t_arvore) {
     struct nodo *aux = no->filhos[idxSplit]; /* nodo cheio a ser dividido */
     
-    /* chave "nova" que quero inserir no nodo pai. */
     struct nodo *div = criarNodoB(t_arvore, aux->ehfolha);
     div->n = t_arvore - 1; 
 
     for (int32_t i = 0; i < div->n; i++) {
-    /* recebendo as chaves mais à direita de aux */
+    /* recebendo as chaves mais à direita (maiores) do nodo cheio */
         div->chaves[i] = aux->chaves[i + t_arvore];
     }
     
-    /* se forem nós internos, vou pegar os filhos mais à direita de aux também */
+    /* se o nodo cheio for interno, pegamos os filhos mais à direita dele também */
     if (!div->ehfolha) {
         for (int32_t i = 0; i < t_arvore; i++) {
             div->filhos[i] = aux->filhos[i + t_arvore];
@@ -76,27 +76,29 @@ struct nodo *repartirFilho(struct nodo *no, int32_t idxSplit, int32_t t_arvore) 
     /* agora a quantidade de chaves diminuiu em aux */
     aux->n = t_arvore - 1;
 
+    /* loop para deixar espaço para o novo filho, que é div */
     for (int32_t i = no->n; i >= idxSplit + 1; i--) {
         no->filhos[i + 1] = no->filhos[i];
     }
-    
+
+    /* div, que contém as maiores chaves que estavam no nodo cheio, agora é outro filho de "no" */
     no->filhos[idxSplit + 1] = div;
 
-    /* loop para deixar espaço para a chave mediana */
+    /* loop para deixar espaço para a chave mediana, caso já haja chaves lá */
     for (int32_t i = no->n - 1; i >= idxSplit; i--) {
         no->chaves[i + 1] = no->chaves[i];
     }
-    
+
     no->chaves[idxSplit] = aux->chaves[t_arvore - 1]; /* chave mediana está no lugar dela */
-    no->n++; /* o pai (que certamente não estava cheio) agora tem mais uma chave! */
+    no->n++; /* pai (que certamente não estava cheio) agora tem mais uma chave */
     
     return no;
 }
 
 void inserirNaoCheio(struct nodo *no, int32_t chave, int32_t t_arvore) {
-    int32_t i = no->n - 1; /* vai de 0 a n-1 para dar n chaves */
+    int32_t i = no->n - 1; /* vai de 0 a n-1 -> n chaves */
     
-    /* procurando o nodo mais à direita cuja chave seja menor ou igual à chave */
+    /* procurando o nodo mais à direita cuja chave seja menor ou igual à chave passada */
     if (no->ehfolha) {
         while (i >= 0 && chave < no->chaves[i]) {
             no->chaves[i + 1] = no->chaves[i];
@@ -106,14 +108,16 @@ void inserirNaoCheio(struct nodo *no, int32_t chave, int32_t t_arvore) {
         no->chaves[i + 1] = chave;
         no->n++;
     } else {
+        /* procura o lugar onde chave é igual ou maior que a chave atual */
         while (i >= 0 && chave < no->chaves[i]) {
             i--;
         }
-        i++;
-        
+        i++; /* incrementa para a posição aonde a chave deve ir */
+
+        /* reparte este filho caso ele esteja cheio */
         if (no->filhos[i]->n == 2*(t_arvore) - 1) {
             no->filhos[i] = repartirFilho(no, i, t_arvore);
-        /* depois da divisão, pode ser q a chave seja maior que a chave mediana do pai (q foi dividida) */
+        /* depois da divisão, pode ser que a chave seja maior que a chave mediana do pai */
             if (chave > no->chaves[i]) {
                 i++;
             }
@@ -151,12 +155,12 @@ void imprimirNodoLargura(struct nodo *no) {
     /* criando fila "bfs" (breadth-first search) */
     struct fila_t *bfs = criarFila();
     inserirFila(bfs, no);
-
     int32_t nivel = 0;
+    
     while (bfs->num > 0) {
         /* guardo a quantidade de nodos que espero nesse mesmo nível */
         int32_t qtdNodos = bfs->num;
-        
+
         printf("----//----\n");
         printf("Nivel %d\n", nivel);
         printf("----//----\n");
@@ -180,7 +184,7 @@ void imprimirNodoLargura(struct nodo *no) {
             if (!aux->ehfolha) {
                 for (int i = 0; i <= aux->n; i++) {
                     if (aux->filhos[i] != NULL) {
-                            inserirFila(bfs, aux->filhos[i]);
+                        inserirFila(bfs, aux->filhos[i]);
                     }
                 }   
             }
@@ -190,14 +194,13 @@ void imprimirNodoLargura(struct nodo *no) {
                 printf("   ");
             }
         }
-        /* linha entre níveis */
-        printf("\n");
+
+        printf("\n"); /* linha entre níveis */
         nivel++;
     }
     destruirFila(bfs);
 }
 
-/* impressão em largura que passa por todos os nodos por meio de uma auxiliar */
 void imprimirArvoreB(struct arvoreB* arvore) {
     if (!arvore) {
         return;
@@ -213,20 +216,21 @@ void imprimirNodoOrdem(struct nodo *no) {
 
     int i = 0;
     while (i < no->n) {
-            if (!no->ehfolha) {
-                imprimirNodoOrdem(no->filhos[i]);
-            }
-            printf(" %d", no->chaves[i]);
-            i++;
+        if (!no->ehfolha) {
+            /* chama recursivo para os filhos antes de imprimir a chave atual */
+            imprimirNodoOrdem(no->filhos[i]);
+        }
+        printf(" %d", no->chaves[i]);
+        i++;
     }
-    
+
+    /* imprimindo o último nodo à direita, inacessível no loop porque está no índice (no->n + 1) */
     if (!no->ehfolha) {
         imprimirNodoOrdem(no->filhos[i]);
     }
 }
 
 
-/* impressão em ordem */
 void imprimirEmOrdem(struct arvoreB* arvore) {
     if (!arvore) {
         return;
@@ -239,16 +243,20 @@ void imprimirEmOrdem(struct arvoreB* arvore) {
 
 struct nodo *buscarNodoB(struct nodo *no, int32_t chave, int32_t *idxEncontrado) {
     int i = 0;
-    
+
+    /* loop que vai até onde a chave atual é igual ou maior que a chave desejada */
     while (i < no->n && chave > no->chaves[i]) {
         i++;
     }
-    
+
+    /* verifica se o índice em que o loop parou está dentro da quantidade de chaves e se achamos a chave desejada */
+    /* em sucesso, retornamos o nodo onde a chave está e atribuímos o índice da chave ao conteúdo do ponteiro passado */
     if (i < no->n && chave == no->chaves[i]) {
         *idxEncontrado = i;
         return no; 
     }
 
+    /* se a chave não foi encontrada e não há filhos onde procurar, retornamos NULl */
     if (no->ehfolha) {
         return NULL;
     }
@@ -269,6 +277,7 @@ void liberarNodo(struct nodo *no) {
         return;
     }
 
+    /* libera um por um dos filhos antes, se houver */
     if (!no->ehfolha) {
         for (int i = 0; i <= no->n; i++) {
             liberarNodo(no->filhos[i]);
@@ -286,6 +295,7 @@ void deletarArvore(struct arvoreB* arvore) {
     }
 
     liberarNodo(arvore->raiz);
+    /* recebe NULL para o caso de a raiz ser procurada ou chamada externamente */
     arvore->raiz = NULL;
 
     free(arvore);
