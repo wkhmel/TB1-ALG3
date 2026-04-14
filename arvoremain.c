@@ -14,7 +14,7 @@ int main() {
       inserirArvoreB(arv, x);
       imprimirArvoreB(arv);
       imprimirEmOrdem(arv);
-  } while (x != -1)
+  } while (x != -1);
 
   deletarArvore(arv);
   
