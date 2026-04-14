@@ -1,16 +1,16 @@
 # makefile ArvoreB
 
-CC      = gcc
-CFLAGS  = -Wall -Wextra -Werror -g -std=c2x
+CC      = gcc-14
+CFLAGS  = -Wall -Wextra -Werror -g -std=c23
 LDLIBS  = -lm
-MAIN    = prova1_5413
-ENTREGA = prova1_5413
+MAIN    = prova1_20255413
+ENTREGA = prova1_20255413
 
 # lista de arquivos de cabeçalho 
 HDR = arvoreB.h fila.h
 
 # lista de arquivos-objeto
-OBJ = fila.o arvoreB.o arvoremain.o
+OBJ = fila.o arvoreB.o main.o
 
 all: $(MAIN)
 
@@ -21,7 +21,7 @@ $(MAIN): $(OBJ)
 # construir os TADs
 fila.o: fila.c fila.h
 arvoreB.o: arvoreB.c arvoreB.h
-arvoremain.o: arvoremain.c $(HDR) 
+main.o: main.c $(HDR) 
 
 # executar
 run: all
