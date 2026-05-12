@@ -324,10 +324,10 @@ bool removerChaveArvoreB(struct arvoreB *arvore, int32_t chave)
                 return false;
         }
 
-        return removerChaveNodo(arvore->raiz, chave, arvore->t_arvore);
+        return removerChaveNodo(arvore, arvore->raiz, chave);
 }
 
-bool removerChaveNodo(struct nodo *no, int32_t chave, int32_t t) 
+bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave) 
 {
         if (!no) {
                 return false;
@@ -352,7 +352,7 @@ bool removerChaveNodo(struct nodo *no, int32_t chave, int32_t t)
                 return true;
         }
 
-        if (aux->filhos[id]->n >= t) {
+        if (aux->filhos[id]->n >= arvore->t_arvore) {
                 int32_t idPred;
                 struct nodo *predecessor = buscarPredecessor(aux->filhos[id], &idPred);
 
@@ -360,16 +360,16 @@ bool removerChaveNodo(struct nodo *no, int32_t chave, int32_t t)
                 aux->chaves[id] = predecessor->chaves[idPred];
 
                 /* chamando remoção recursivamente para remover o predecessor */
-                return removerChaveNodo(predecessor, predecessor->chaves[idPred], t);
+                return removerChaveNodo(arvore, predecessor, predecessor->chaves[idPred]);
         }
 
-        if (aux->filhos[id + 1]->n >= t) {
+        if (aux->filhos[id + 1]->n >= arvore->t_arvore) {
                 int32_t idSucessor;
                 struct nodo *sucessor = buscarSucessor(aux->filhos[id + 1], &idSucessor);
 
                /* mesma ideia da função de predecessor*/
                aux->chaves[id] = predecessor->chaves[idSucessor];
-               return removerChaveNodo(sucessor, sucessor->chaves[idSucessor], t);
+               return removerChaveNodo(arvore, sucessor, sucessor->chaves[idSucessor]);
         }
 
         /* antes do merge, removemos a chave a ser excluída*/
@@ -381,9 +381,9 @@ bool removerChaveNodo(struct nodo *no, int32_t chave, int32_t t)
         /* se o código veio até aqui é pq ambos os filhos só têm o mínimo de chaves (t - 1)*/
         /* por isso, se usássemos sucessor/predecessor, iríamos quebrar a propriedade da árvore B */
         /* fazemos um merge para unir os filhos de indices id e id + 1 com a própria chave a ser removida */
-        mergeNodoArvoreB(aux->filhos[id], aux->filhos[id + 1], chave, t);
+        mergeNodoArvoreB(aux->filhos[id], aux->filhos[id + 1], chave, arvore->t_arvore);
         /* como mesclamos dois nodos de n igual a (t - 1) + a chave a ser removida, agora temos 2*(t-1) + 1  = 2t - 1 chaves */
-        aux->filhos[id]->n = 2*t - 1;  
+        aux->filhos[id]->n = 2*arvore->t_arvore - 1;  
 
         /* caso haja filhos à frente do que já mesclamos, passamos eles para a esquerda*/
         for (int32_t i = id + 1; i < aux->n - 1; i++) {
@@ -392,7 +392,7 @@ bool removerChaveNodo(struct nodo *no, int32_t chave, int32_t t)
         /* liberamos o último filho, que já foi mesclado */
         free(aux->filhos[aux->n - 1]);
 
-        return removerChaveNodo(aux->filhos[id], chave, t);
+        return removerChaveNodo(arvore, aux->filhos[id], chave);
 
         /* se o nodo de onde a chave foi removida ficou vazio, quer dizer que ele é a nova raiz */
         if (aux->n == 0) {
@@ -433,3 +433,5 @@ void deletarArvore(struct arvoreB* arvore)
 
         free(arvore);
 }
+
+
