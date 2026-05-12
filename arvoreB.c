@@ -395,8 +395,9 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
         return removerChaveNodo(arvore, aux->filhos[id], chave);
 
         /* se o nodo de onde a chave foi removida ficou vazio, quer dizer que ele é a nova raiz */
-        if (aux->n == 0) {
-                arvore->raiz = aux->filhos[id]; /* id é o primeiro e único filho necessariamente, nesse caso */
+		if (aux->n == 0) {
+				/* id é o primeiro e único filho necessariamente, nesse caso */
+                arvore->raiz = aux->filhos[id]; 
                 free(aux);
                 return true;
         }
