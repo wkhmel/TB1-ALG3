@@ -52,6 +52,25 @@ struct nodo *buscarNodoB(struct nodo *no, int32_t chave, int32_t *idxEncontrado)
 /* usa a função acima para percorrer todos os nodos da árvore em busca da chave passada e coloca no conteúdo do ponteiro idxEncontrado o índice no vetor de chaves. */
 struct nodo* buscarArvoreB(struct arvoreB* arvore, int32_t chave, int32_t* idxEncontrado);
 
+/* função que mescla as chaves de dois nodos + uma chave também passada por parâmetro (chave que ficava entre os dois nodos) */
+/* também recebe o t da árvore */
+void mergeNodoArvoreB(struct nodo *esq, struct nodo *dir, int32_t chave, int32_t t);
+
+/* busca o antecessor de uma chave em determinado nodo, recebendo este e um ponteiro que receberá o índice do predecessor */
+/* devolve o nodo onde ele está */
+struct nodo *buscarPredecessor(struct nodo *no, *int32_t idxEncontrado);
+
+/* busca o sucessor de uma chave em determinado nodo, recebendo este e um ponteiro que receberá o índice do sucessor */
+/* devolve o nodo onde ele está */
+struct nodo *buscarSucessor(struct nodo *no, *int32_t idxEncontrado);
+
+/* função principal da que está abaixo */
+bool removerChaveArvoreB(struct arvoreB *arvore, int32_t chave);
+
+/* função auxiliar que remove recursivamente uma chave. recebe a árvore (para usar o t e a raiz), o nodo (raiz) e a chave a ser removida */
+/* garante as propriedades da árvore B. devolve true se conseguiu remover e false se não conseguiu (ex: se a chave nem está na árvore) */
+bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave);
+
 /* libera cada um dos nodos da árvore (diferente da função excluir, pois esta deleta só um de cada vez e procura manter as propriedades da árvore B). */
 /* passa em pós-ordem, ou seja: primeiro exclui os filhos dos lados para não perder seus ponteiros e em seguida exclui o próprio pai. */
 void liberarNodo(struct nodo *no);
