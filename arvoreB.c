@@ -360,8 +360,6 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                 for (int32_t i = id; i < aux->n - 1; i++) {
                         aux->chaves[i] = aux->chaves[i + 1];
                 }
-                /* liberamos a última chave */
-                free(aux->chaves[aux->n - 1]);
                 aux->n--;
 
                 return true;
