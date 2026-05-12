@@ -287,7 +287,25 @@ struct nodo *buscarArvoreB(struct arvoreB *arvore, int32_t chave, int32_t *idxEn
 
 void mergeNodoArvoreB(struct nodo *esq, struct nodo *dir, int32_t chave, int32_t t)
 {
-        
+        if (!esq || !dir)
+			return;
+
+		esq->n = 2 * t - 1;
+		esq->chaves[t - 1] = chave;
+
+		for (int32_t i = t; i < esq->n; i++) {
+			esq->chaves[i] = dir->chaves[i - t];
+		}
+
+		if (!esq->ehfolha) {
+				for (int32_t i = 0; i < t; i++) {
+					esq->filhos[t + i] = dir->filhos[i];
+				}
+		}
+
+		free(dir->chaves);
+		free(dir->filhos);
+		free(dir);
 }
 
 struct nodo *buscarPredecessor(struct nodo *no, int32_t *idxEncontrado) 
