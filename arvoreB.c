@@ -287,7 +287,22 @@ struct nodo *buscarArvoreB(struct arvoreB *arvore, int32_t chave, int32_t *idxEn
 
 void mergeNodoArvoreB(struct nodo *esq, struct nodo *dir, int32_t chave, int32_t t)
 {
-        
+        if (!esq || !dir)
+			return;
+
+        /* como mesclamos dois nodos de n igual a (t - 1) + a chave a ser removida, agora temos 2*(t-1) + 1  = 2t - 1 chaves */
+        esq->n = 2*t - 1;
+		esq->chaves[t - 1] = chave;
+
+		for (int32_t i = t; i < esq->n; i++) {
+			esq->chaves[i] = dir->chaves[i - t];
+		}
+
+		if (!esq->ehfolha) {
+				for (int32_t i = 0; i < t; i++) {
+					esq->filhos[t + i] = dir->filhos[i];
+				}
+		}
 }
 
 struct nodo *buscarPredecessor(struct nodo *no, int32_t *idxEncontrado) 
@@ -382,16 +397,17 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
         /* por isso, se usássemos sucessor/predecessor, iríamos quebrar a propriedade da árvore B */
         /* fazemos um merge para unir os filhos de indices id e id + 1 com a própria chave a ser removida */
         mergeNodoArvoreB(aux->filhos[id], aux->filhos[id + 1], chave, arvore->t_arvore);
-        /* como mesclamos dois nodos de n igual a (t - 1) + a chave a ser removida, agora temos 2*(t-1) + 1  = 2t - 1 chaves */
-        aux->filhos[id]->n = 2*arvore->t_arvore - 1;  
-
+	
         /* caso haja filhos à frente do que já mesclamos, passamos eles para a esquerda*/
         for (int32_t i = id + 1; i < aux->n - 1; i++) {
                 aux->filhos[i] = aux->filhos[i + 1];
         }
         /* liberamos o último filho, que já foi mesclado */
-        free(aux->filhos[aux->n - 1]);
-
+		struct nodo *mesclado = aux->filhos[aux->n - 1];
+        free(mesclado->filhos);
+		free(mesclado->chaves);
+		free(mesclado);
+		
         return removerChaveNodo(arvore, aux->filhos[id], chave);
 
         /* se o nodo de onde a chave foi removida ficou vazio, quer dizer que ele é a nova raiz */
@@ -434,5 +450,6 @@ void deletarArvore(struct arvoreB* arvore)
 
         free(arvore);
 }
+
 
 
