@@ -417,14 +417,14 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
         }
 
         /* verificamos se o próximo nodo tem só t-1 chaves antes de descer */
-        if (no->filhos[id]->n == t - 1) {
+        if (no->filhos[id]->n == arvore->t_arvore - 1) {
                 /* assumimos que o nodo com mais chaves é o irmão direito de no->filhos[id] */
-                struct nodo *maior = no->filhos[id + 1]->n;
+                struct nodo *maior = no->filhos[id + 1];
 
                 /* se não estivermos no primeiro filho, esse filho tem irmão esquerdo e direito */
                 if (id > 0) {
                         /* se o filho à esquerda tiver mais chaves, atualizamos o maior */
-                        if (no->filhos[id - 1]->n > maior) {
+                        if (no->filhos[id - 1]->n > maior->n) {
                                 maior = no->filhos[id + 1];
                         }
                 }
@@ -435,7 +435,7 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                         no->filhos[id]->chaves[no->filhos[id]->n - 1] = no->chaves[id];
 
                         /* se o nodo com mais chaves for o irmao direito, passamos sua primeira chave para o seu pai */
-                        if (maior == no->filhos[id + 1]->n) {
+                        if (maior->n == no->filhos[id + 1]->n) {
                                 no->chaves[1] = maior->chaves[1];
                         } else {
                                 no->chaves[maior->n - 1] = maior->chaves[maior->n - 1];
