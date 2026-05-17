@@ -481,8 +481,8 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                                         no->filhos[id]->chaves[i + 1] = no->filhos[id]->chaves[i];
                                 }
 
-				/*TESTAR*/
-				if (!no->filhos[id]->ehfolha) {
+								/*TESTAR*/
+								if (!no->filhos[id]->ehfolha) {
                                         for (int32_t i = no->filhos[id]->n; i >= 0; i--) {
                                                 no->filhos[id]->filhos[i + 1] = no->filhos[id]->filhos[i];
                                         }
