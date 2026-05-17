@@ -481,14 +481,14 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                                         no->filhos[id]->chaves[i + 1] = no->filhos[id]->chaves[i];
                                 }
 
-								/*TESTAR*/
-								if (!no->filhos[id]->ehfolha) {
-                                        for (int32_t i = no->filhos[id]->n; i >= 0; i--) {
-                                                no->filhos[id]->filhos[i + 1] = no->filhos[id]->filhos[i];
-                                        }
-                                        no->filhos[id]->filhos[0] = maior->filhos[maior->n];
-                                        maior->filhos[maior->n] = NULL;
-                                }
+				// Usando maior->ehfolha fica idêntico à lógica que você usou no irmão direito!
+				if (!maior->ehfolha) {
+        				for (int32_t i = no->filhos[id]->n; i >= 0; i--) {
+                				no->filhos[id]->filhos[i + 1] = no->filhos[id]->filhos[i];
+        				}
+        				no->filhos[id]->filhos[0] = maior->filhos[maior->n];
+        				maior->filhos[maior->n] = NULL;
+				}
 				
                                 no->filhos[id]->chaves[0] = no->chaves[id-1];
                                 no->chaves[id - 1] = maior->chaves[maior->n - 1];
@@ -496,6 +496,7 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                         }
                         no->filhos[id]->n++;
                         maior->n--;
+			
                 } else {
                         struct nodo *aux;
                         /* se tiver só t-1 chaves, por garantia, mesclamos as chaves dos filhos + chave do pai */
