@@ -390,8 +390,7 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                 for (int32_t i = id + 1; i < no->n; i++) {
                         no->filhos[i] = no->filhos[i + 1];
                 }
-
-		no->filhos[no->n] = NULL; 
+		
 		no->n--;
 		
 		/* guardamos o último nodo (vai ser removido) */
@@ -400,13 +399,13 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                 free(aux->filhos);
                 free(aux->chaves);
                 free(aux);
-
+		aux = NULL; 
+		
                 /* se o nodo de onde a chave foi removida ficou vazio, quer dizer que ele é a nova raiz */
                 if (no->n == 0) {
                         arvore->raiz = no->filhos[0];
                         free(no->chaves);
                         free(no);
-                        return true;
                 }
 
 		/* agora a chave a ser removida está no filho, então chamamos a remoção para baixo */
