@@ -56,13 +56,13 @@ struct nodo* buscarArvoreB(struct arvoreB* arvore, int32_t chave, int32_t* idxEn
 /* também recebe o t da árvore */
 void mergeNodoArvoreB(struct nodo *esq, struct nodo *dir, int32_t chave, int32_t t);
 
-/* busca o antecessor de uma chave em determinado nodo, recebendo este e um ponteiro que receberá o índice do predecessor */
-/* devolve o nodo onde ele está */
-struct nodo *buscarPredecessor(struct nodo *no, int32_t *idxEncontrado);
+/* busca o antecessor de uma chave em determinado nodo (cujo id já é passado) e devolve o nodo onde ele está. */
+/* funciona como um "buscarMaximo" em filhos à esquerda do nodo passado. */
+struct nodo *buscarPredecessor(struct nodo *no);
 
-/* busca o sucessor de uma chave em determinado nodo, recebendo este e um ponteiro que receberá o índice do sucessor */
-/* devolve o nodo onde ele está */
-struct nodo *buscarSucessor(struct nodo *no, int32_t *idxEncontrado);
+/* busca o sucessor de uma chave em determinado nodo e devolve o nodo onde ele está */
+/* funciona como um "buscarMinimo" em filhos à direita do nodo passado. */
+struct nodo *buscarSucessor(struct nodo *no);
 
 /* função principal da que está abaixo */
 bool removerChaveArvoreB(struct arvoreB *arvore, int32_t chave);
