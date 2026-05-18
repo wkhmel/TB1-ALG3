@@ -158,6 +158,11 @@ void imprimirNodoLargura(struct nodo *no)
                 return;
         }
 
+	if (!no->n) {
+		printf("Arvore vazia.");
+		return;
+	}
+	
         /* criando fila "bfs" (breadth-first search) */
         struct fila_t *bfs = criarFila();
         inserirFila(bfs, no);
@@ -243,7 +248,7 @@ void imprimirNodoOrdem(struct nodo *no)
 
 void imprimirEmOrdem(struct arvoreB* arvore) 
 {
-        if (!arvore) {
+        if (!arvore || !arvore->raiz->n) {
                 return;
         }
 
@@ -365,7 +370,7 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                         /* o predecessor tem que ser a última chave do nodo mais à direita */
 			no->chaves[id] = predecessor->chaves[predecessor->n - 1];       
 
-                /* vamos procurando o predecessor a partir do próximo filho (n saltamos direto pq pode ser q o predecessor tenha só t-1 chaves) */
+                	/* procurando a chave predecessor a partir do prox filho (n saltamos direto pq pode ser q o predecessor tenha só t-1 chaves) */
 			return removerChaveNodo(arvore, no->filhos[id], predecessor->chaves[predecessor->n - 1]);       
                 }
 
@@ -390,17 +395,15 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                 for (int32_t i = id + 1; i < no->n; i++) {
                         no->filhos[i] = no->filhos[i + 1];
                 }
-		
+	
+		/* liberando o último nodo */
+                free(no->filhos[no->n]->filhos);
+                free(no->filhos[no->n]->chaves);
+                free(no->filhos[no->n]);
+		no->filhos[no->n] = NULL; 
+
 		no->n--;
-		
-		/* guardamos o último nodo (vai ser removido) */
-                struct nodo *aux = no->filhos[no->n];
-		
-                free(aux->filhos);
-                free(aux->chaves);
-                free(aux);
-		aux = NULL; 
-		
+
                 /* se o nodo de onde a chave foi removida ficou vazio, quer dizer que ele é a nova raiz */
                 if (no->n == 0) {
 			struct nodo* novaraiz = no->filhos[0];
@@ -522,6 +525,7 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                         }
 
                         no->filhos[no->n] = NULL;
+			
                         /* podemos liberar o maior */
                         free(aux->filhos);
                         free(aux->chaves);
