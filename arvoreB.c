@@ -478,11 +478,12 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                                 }
 
                         } else {
-                                /* caso 3b. abre espaço no começo p/ receber chave  */
+                                /* caso 3b. abre espaço no começo do no->filhos p/ receber chave do pai  */
                                 for (int32_t i = no->filhos[id]->n - 1; i >= 0; i--) {
                                         no->filhos[id]->chaves[i + 1] = no->filhos[id]->chaves[i];
                                 }
 
+				/* os filhos também precisam ser empurrados */
 				if (!maior->ehfolha) {
         				for (int32_t i = no->filhos[id]->n; i >= 0; i--) {
                 				no->filhos[id]->filhos[i + 1] = no->filhos[id]->filhos[i];
@@ -512,6 +513,7 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
 
 
                         } else {
+				/* se o irmão imediato com mais chaves for o esquerdo, passamos o no->filhos[id] para ele */
                                 mergeNodoArvoreB(maior, no->filhos[id], no->chaves[id-1], arvore->t_arvore);
 
                                 aux = no->filhos[id];
@@ -519,6 +521,7 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                                 for (int32_t i = id; i < no->n; i++) {
                                         no->filhos[i] = no->filhos[i + 1];
                                 }
+				/* ao descermos a recursão, agora o valor a ser removido está no irmão imediato do que íamos antes */
                                 id--;
                         }
 
