@@ -3,8 +3,8 @@
 CC      = gcc-14
 CFLAGS  = -Wall -Wextra -Werror -g -std=c23
 LDLIBS  = -lm
-MAIN    = prova1_20255413
-ENTREGA = prova1_20255413
+MAIN    = prova2_20255413_20256088
+ENTREGA = prova2_20255413_20256088
 
 # lista de arquivos de cabeçalho 
 HDR = arvoreB.h fila.h
