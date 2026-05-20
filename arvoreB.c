@@ -414,7 +414,7 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                         free(no);
                         arvore->raiz = novaraiz;
 			/* continuamos a remoção a partir da nova raiz */
-			return removerchaveNodo(arvore, arvore->raiz, chave);
+			return removerChaveNodo(arvore, arvore->raiz, chave);
                 }
 		
 		return removerChaveNodo(arvore, no->filhos[id], chave);
