@@ -348,7 +348,7 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                 return false;
         }
 
-	/* procurando o índice onde a chave está (ou deveria estar, caso esteja mais embaixo) */
+	/* procurando o índice onde a chave está (ou deveria estar, caso esteja mais pra baixo) */
         int32_t id = 0;
         while (id < no->n && chave > no->chaves[id]) {
                 id++;
@@ -367,10 +367,10 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                 }
 
                 /* caso 2: a chave k está no nó x e x é um nó interno */
-		/* obs: um if a mais para garantir que escolho o lado com mais chaves */
+		/* obs: if a mais para garantir que escolho o lado com mais chaves */
                 if (no->filhos[id]->n >= no->filhos[id + 1]->n && no->filhos[id]->n >= arvore->t_arvore) {                
                  	struct nodo *predecessor = buscarPredecessor(no->filhos[id]);
-                        /* o predecessor tem que ser a última chave do nodo mais à direita */
+                        /* o predecessor tem que ser a última chave do nodo mais à direita (2a) */
 			no->chaves[id] = predecessor->chaves[predecessor->n - 1];       
 
                 	/* procurando a chave pred. a partir do próx filho (n saltamos direto pois pode ser que o predecessor tenha só t-1 chaves) */
@@ -378,14 +378,14 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                 }
 
 		if (no->filhos[id + 1]->n >= arvore->t_arvore) {
-			struct nodo *sucessor = buscarSucessor(no->filhos[id + 1]);
+			struct nodo *sucessor = buscarSucessor(no->filhos[id + 1]); /* 2b */
 			no->chaves[id] = sucessor->chaves[0];
 
 			return removerChaveNodo(arvore, no->filhos[id + 1], sucessor->chaves[0]);
 		}
 
 
-                /* caso 2c: ambos os filhos têm t - 1 chaves, então fazemos um merge para uni-los com a própria chave a ser removida */
+                /* caso 2c: ambos os filhos têm só t - 1 chaves, então fazemos um merge entre eles e a chave a ser removida */
                 mergeNodoArvoreB(no->filhos[id], no->filhos[id + 1], chave, arvore->t_arvore);
 
 		/* eliminamos a chave mesclada do pai e, depois, substituímos o nodo pelos da frente (se tiver) */
@@ -404,9 +404,11 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
 
 		no->n--;
 
-                /* se o nodo de onde a chave foi removida ficou vazio, quer dizer que ele é a nova raiz */
+		/* ao fazer a remoção da chave, ele pode ter ficado sem chaves. */
+		/* nesse caso, o primeiro filho é a nova raiz, e continuamos a remoção a partir dele. */
                 if (no->n == 0) {
-			struct nodo* novaraiz = no->filhos[0];
+			/* variável pra não perdermos o nodo após a liberação */
+			struct nodo* novaraiz = no->filhos[0]; 
                         free(no->chaves);
                         free(no->filhos);
                         free(no);
@@ -422,14 +424,14 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                 return false;
         }
 
+	/* parecido com a ideia do insere (lá desce splitando por precaução, já aqui desce fazendo merge) */
         if (no->filhos[id]->n == arvore->t_arvore - 1) {
-                /* assumimos que o nodo com mais chaves é o irmão direito de no->filhos[id] */
                 struct nodo *maior;
                 int32_t idmaior = id;
 
-                /* se estivermos no meio dos filhos, esse filho tem irmãos esquerdo e direito */
+                /* se estivermos no meio dos filhos, esse filho tem os dois irmãos (esquerdo e direito) */
                 if (id > 0 && id < no->n) {
-                        /* vê qual irmao tem mais chaves */
+                        /* vê qual irmão tem mais chaves */
                         if (no->filhos[id - 1]->n > no->filhos[id + 1]->n) {
                                 maior = no->filhos[id - 1];
                                 idmaior--; /* índice do filho à esquerda de id */
@@ -440,13 +442,11 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                         }
                 }
 		
-                /* se estivermos no primeiro filho, o único irmão imediato é o direito */
                 if (id == 0) {
                         maior = no->filhos[id + 1];
                         idmaior++;
                 }
 
-                /* se estivermos no último filho, este só tem irmão esquerdo */
                 if (id == no->n) {
                         maior = no->filhos[id - 1];
                         idmaior--;
@@ -461,7 +461,7 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                                 /* passamos sua primeira chave para o seu pai */
 				no->chaves[id] = maior->chaves[0];
 
-                                /* remove a chave do irmão direito q passamos (a primeira)*/
+                                /* remove a chave do irmão direito que passamos (a primeira)*/
                                 for (int32_t i = 0; i < maior->n - 1; i++) {
                                         maior->chaves[i] = maior->chaves[i + 1];
                                 }
@@ -478,12 +478,12 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                                 }
 
                         } else {
-                                /* caso 3b. abre espaço no começo do no->filhos p/ receber chave do pai  */
+                                /* abrimos espaço para receber a chave emprestada */
                                 for (int32_t i = no->filhos[id]->n - 1; i >= 0; i--) {
                                         no->filhos[id]->chaves[i + 1] = no->filhos[id]->chaves[i];
                                 }
 
-				/* os filhos também precisam ser empurrados */
+				/* abrindo espaço no começo para colocar os filhos do maior (se tiver) */
 				if (!maior->ehfolha) {
         				for (int32_t i = no->filhos[id]->n; i >= 0; i--) {
                 				no->filhos[id]->filhos[i + 1] = no->filhos[id]->filhos[i];
@@ -501,7 +501,7 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
 			
                 } else {
                         struct nodo *aux;
-                        /* se tiver só t-1 chaves, por garantia, mesclamos as chaves dos filhos + chave do pai */
+                        /* caso 3b: irmão com mais chaves tem só t-1 chaves, então mesclamos as chaves dos filhos e a do pai */
                         if (idmaior == id + 1) {
                                 mergeNodoArvoreB(no->filhos[id], maior, no->chaves[id], arvore->t_arvore);
 
@@ -521,13 +521,13 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
                                 for (int32_t i = id; i < no->n; i++) {
                                         no->filhos[i] = no->filhos[i + 1];
                                 }
-				/* ao descermos a recursão, agora o valor a ser removido está no irmão imediato do que íamos antes */
-                                id--;
+				
+                                id--; /* o valor do id para a próxima recursão agora está no irmão esquerdo */
                         }
 
                         no->filhos[no->n] = NULL;
 			
-                        /* podemos liberar o maior */
+                        /* podemos liberar o mesclado */
                         free(aux->filhos);
                         free(aux->chaves);
                         free(aux);
@@ -539,8 +539,6 @@ bool removerChaveNodo(struct arvoreB *arvore, struct nodo *no, int32_t chave)
 			
                         no->n--;
 
-			/* ao fazer merge da chave do pai, ele pode ter ficado sem chaves. */
-			/* nesse caso, o primeiro filho é a nova raiz, e continuamos a remoção a partir dele. */
                         if (no->n < 1) {
                                 struct nodo* novaraiz = no->filhos[0];
                                 free(no->chaves);
